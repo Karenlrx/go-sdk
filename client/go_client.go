@@ -448,6 +448,11 @@ func (c *Client) GetSystemConfigByKey(ctx context.Context, configKey string) ([]
 	return c.apiHandler.GetSystemConfigByKey(ctx, c.groupID, configKey)
 }
 
+// GetTransactionReceiptByHashWithProof returns the transaction receipt and proof according to the given transaction hash
+func (c *Client) GetTransactionReceiptByHashWithProof(ctx context.Context, txHash common.Hash) ([]byte, error) {
+	return c.apiHandler.GetTransactionReceiptByHashWithProof(ctx, c.groupID, txHash)
+}
+
 func getVersionNumber(strVersion string) (int, error) {
 	strList := strings.Split(strVersion, ".")
 	if len(strList) != 3 {

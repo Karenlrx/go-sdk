@@ -612,3 +612,41 @@ func (api *APIHandler) GetSystemConfigByKey(ctx context.Context, groupID int, co
 	js, err := json.MarshalIndent(raw, "", indent)
 	return js, err
 }
+
+//func (api *APIHandler) GetTransactionReceiptByHashWithProof(ctx context.Context, groupID int, txHash common.Hash) (*types.Proof, *types.Receipt, error) {
+//	var raw *types.Receipt
+//	var proof *types.Proof
+//
+//	var receiptAndProof = &struct {
+//		types.Proof
+//		types.Receipt
+//		Status string `json:"status"`
+//	}{}
+//	err := api.CallContext(ctx, receiptAndProof, "getTransactionReceiptByHashWithProof", groupID, txHash.Hex())
+//	if err != nil {
+//		return nil, nil, err
+//	}
+//	if len(receiptAndProof.Status) < 2 {
+//		return nil, nil, fmt.Errorf("transaction %v is not on-chain", txHash.Hex())
+//	}
+//	status, err := strconv.ParseInt(receiptAndProof.Status[2:], 16, 32)
+//	if err != nil {
+//		return nil, nil, fmt.Errorf("GetTransactionReceipt failed, strconv.ParseInt err: " + fmt.Sprint(err))
+//	}
+//	raw = &receiptAndProof.Receipt
+//	raw.Status = int(status)
+//
+//	proof = &receiptAndProof.Proof
+//
+//	return proof, raw, nil
+//}
+
+func (api *APIHandler) GetTransactionReceiptByHashWithProof(ctx context.Context, groupID int, txHash common.Hash) ([]byte, error) {
+	var raw interface{}
+	err := api.CallContext(ctx, &raw, "getTransactionReceiptByHashWithProof", groupID, txHash.Hex())
+	if err != nil {
+		return nil, err
+	}
+	js, err := json.MarshalIndent(raw, "", indent)
+	return js, nil
+}
